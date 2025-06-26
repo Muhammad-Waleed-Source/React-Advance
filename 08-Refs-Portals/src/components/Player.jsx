@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-
 // using Refs(useRef hook) for value managemnet.......................................
 export default function Player() {
   const playerName = useRef();
@@ -8,6 +7,7 @@ export default function Player() {
 
   function handleClick() {
     setEnteredPlayerName(playerName.current.value);
+    playerName.current.value = '';
   }
 
   return (
