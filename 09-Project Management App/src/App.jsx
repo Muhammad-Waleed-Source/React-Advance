@@ -1,8 +1,59 @@
+import { useState } from "react";
+import NewProject from "./components/NewProject";
+import NoProjectSelected from "./components/NoProjectSelected";
+import Sidebar from "./components/Sidebar";
+
 function App() {
+  const [projectState, setProjectState] = useState({
+    selectedProjectId: undefined,
+    projects: []
+  });
+
+  function handleStartAddProject() {
+    setProjectState(prevState => {
+      return {
+        ...prevState,
+        selectedProjectId: null,
+      }
+    });
+  }
+
+  function handleCancelAddProject(){
+    setProjectState(prevState => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+      }
+    });
+  }
+
+  function handleAddProject(projectData) {
+    setProjectState(prevState => {
+      const projectId = Math.random();
+      const NewProject = {
+        ...projectData,
+        id: projectId
+      }
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: [...prevState.projects, NewProject]
+      }
+    })
+  }
+
+  let content;
+  if(projectState.selectedProjectId === null){
+    content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />
+  } else if(projectState.selectedProjectId === undefined) {
+    content = <NoProjectSelected onStartAddProject={handleStartAddProject} />
+  }
+
   return (
-    <>
-      <h1 className="my-8 text-center text-5xl font-bold">Hello World</h1>
-    </>
+    <main className="h-screen my-8 flex gap-8">
+      <Sidebar onStartAddProject={handleStartAddProject} projects={projectState.projects} />
+      {content}
+    </main>
   );
 }
 
