@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function StateLogin() {
+export default function Login() {
   // const [enteredEmail, setEnteredEmail] = useState("");
   // const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredValues, setEnteredValues] = useState({
@@ -8,8 +8,22 @@ export default function StateLogin() {
     password: "",
   });
 
+  const [didEdit, setDidEdit] = useState({
+    email: false,
+    password: false,
+  });
+
+  const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
+
   function handleSubmit(event) {
     event.preventDefault();
+
+    if (!enteredValues.email.includes("@")) {
+      // force show validation by marking it edited
+      setDidEdit((prev) => ({ ...prev, email: true }));
+      return;
+    }
+
     console.log(enteredValues);
   }
 
@@ -17,6 +31,18 @@ export default function StateLogin() {
     setEnteredValues((prevValues) => ({
       ...prevValues,
       [identifier]: value,
+    }));
+
+    setDidEdit((prevEdit) => ({
+      ...prevEdit,
+      [identifier]: false,
+    }));
+  }
+
+  function handleInputBlur(identifier) {
+    setDidEdit((prevEdit) => ({
+      ...prevEdit,
+      [identifier]: true,
     }));
   }
 
@@ -31,9 +57,15 @@ export default function StateLogin() {
             id="email"
             type="email"
             name="email"
-            onChange={(event) => handleInputChange('email', event.target.value)}
+            onBlur={() => handleInputBlur("email")}
+            onChange={(event) => handleInputChange("email", event.target.value)}
             value={enteredValues.email}
           />
+          <div className="control-error">
+            {didEdit.email && !enteredValues.email.includes("@") && (
+              <p>Please enter a valid email address.</p>
+            )}
+          </div>
         </div>
 
         <div className="control no-margin">
@@ -42,7 +74,9 @@ export default function StateLogin() {
             id="password"
             type="password"
             name="password"
-            onChange={(event) => handleInputChange('password', event.target.value)}
+            onChange={(event) =>
+              handleInputChange("password", event.target.value)
+            }
             value={enteredValues.password}
           />
         </div>
