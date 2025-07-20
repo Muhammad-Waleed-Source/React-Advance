@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 export default function Login() {
 
   const [emailIsInvalid, setEmailIsInvalid] = useState(false);
+  const [passIsInValid, setPassIsInvalid] = useState(false);
 
   const email = useRef();
   const password = useRef();
@@ -19,7 +20,13 @@ export default function Login() {
       return;
     }
 
+    if(enteredPassword.length < 6){
+      setPassIsInvalid(true);
+      return;
+    }
+
     setEmailIsInvalid(false);
+    setPassIsInvalid(false);
 
     console.log('Sending HTTP request...');
   }
@@ -38,6 +45,7 @@ export default function Login() {
         <div className="control no-margin">
           <label htmlFor="password">Password</label>
           <input id="password" type="password" name="password" ref={password} />
+          <div className="control-error">{passIsInValid && <p>Your password must be of six characters.</p> }</div>
         </div>
       </div>
 
