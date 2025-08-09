@@ -21,7 +21,9 @@ export async function loader() {
     // return {isError: true, message: 'Could not fetch events.'}
     throw new Response(JSON.stringify({ message: "Could not fetch events." }), {
       status: 500,
-    });
+    }); // for status codes
+    // return {message: "Could not fetch events."} // for simple error
+    // return json({ message: "Could not fetch events." }, { status: 500 }); // Depricated
   } else {
     // const resData = await response.json();
     // return resData.events;
