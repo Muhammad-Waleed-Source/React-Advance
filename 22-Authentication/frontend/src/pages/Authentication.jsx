@@ -40,7 +40,17 @@ export async function action({ request }) {
       { status: 500 }
     );
   }
+  // Extracting token from the response
+  const resData = await response.json();
+  const token = resData.token;
 
-  // soon: manage that token
-  return redirect('/');
+  // Storing it in local storage(Browser API)
+  localStorage.setItem("token", token);
+
+  // Storing Expiration Date in local storage
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 1);
+  localStorage.setItem("expiration", expiration.toISOString());
+
+  return redirect("/");
 }
