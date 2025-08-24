@@ -7,11 +7,6 @@ const Favorites = () => {
 
   const favoriteProducts = useContext(ProductsContext).products.filter(p => p.isFavorite);
   
-  // const favoriteProducts = useMemo(
-  //   () => products.filter(p => p.isFavorite),
-  //   [products]
-  // );
-
   return favoriteProducts.length === 0 ? (
     <p className="placeholder">Got no favorites yet!</p>
   ) : (
